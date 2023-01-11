@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <title>Battleships</title>
+  <py-config>
+    terminal = false
+    packages = [
+    "tabulate",
+    ]
+    [[fetch]]
+    files = ["./main.py"]
+  </py-config>
+  <py-script src="./pyscripts.py"></py-script>
+</head>
+
+<body>
+  <h1><u>Schiffeversenken</u></h1>
+  <div class="board">
+    <div class="playerships" id="player_board"></div>
+    <div class="hitmiss1" id="hitmiss_board"></div>
+  </div>
+
+  <div class="controls">
+    <div class="controls_content">
+      <div class="scores">
+        <div class="pc_score">
+          <label for="PC_Score">Punkte PC:</label>
+          <output id="score_1">0</output>
+        </div>
+        <div class="player_score">
+          <label for="Player_Score">Punkte Spieler:</label>
+          <output id="score_2">0</output>
+        </div>
+      </div>
+      <div class="settings">
+        <div class="mechanic">
+          <div class="set">
+            <div class="inp">
+              <div class="heading">
+                Menge:
+              </div>
+              <div class="len_1_c">
+                <label for="len_1" class="form__label">1 Block lang</label>
+                <input type="number" class="form__field" id="laenge_1" name="len_1" placeholder="Bitte Zahl eigeben"
+                  value="1">
+              </div>
+              <div class="len_2_c">
+                <label for="len_2" class="form__label">2 Block lang</label>
+                <input type="number" class="form__field" id="laenge_2" name="len_2" placeholder="Bitte Zahl eigeben"
+                  value="1">
+              </div>
+              <div class="len_3_c">
+                <label for="len_3" class="form__label">3 Block lang</label>
+                <input type="number" class="form__field" id="laenge_3" name="len_3" placeholder="Bitte Zahl eigeben"
+                  value="1">
+              </div>
+              <div class="len_4_c">
+                <label for="len_4" class="form__label">4 Block lang</label>
+                <input type="number" class="form__field" id="laenge_4" name="len_4" placeholder="Bitte Zahl eigeben"
+                  value="1">
+              </div>
+            </div>
+          </div>
+          <div class="place">
+            <div class="heading">
+              Wo Schiffe plazieren:
+            </div>
+            <div class="start_end">
+              <div class="placeship_mechanic">
+                <div>
+                  Anfang des Schiffes:
+                </div>
+                <input type="text" id="start_letter" placeholder="A" value="A" disabled>
+                <input type="number" id="start_number" placeholder="0" value="0" disabled>
+                <div>
+                  Ende des Schiffes:
+                </div>
+                <input type="text" id="end_letter" placeholder="A" value="A" disabled>
+                <input type="number" id="end_number" placeholder="2" value="2" disabled>
+              </div>
+              <div class="wrap place_btn">
+                <button id="place_ships" class="button_place btn btn-primary btn-round" type="submit"
+                  py-click="ship_place()" disabled>Plazieren</button>
+              </div>
+            </div>
+            <div>
+              <hr>
+              Automatische Platzieren:
+              <input type="checkbox" id="auto_place" name="auto_place" onchange="disable_func()" checked="true">
+              <script>
+                function disable_func() {
+                  var checkbox = document.querySelector("#auto_place");
+                  var input1 = document.querySelector("#start_letter");
+                  var input2 = document.querySelector("#start_number");
+                  var input3 = document.querySelector("#end_letter");
+                  var input4 = document.querySelector("#end_number");
+                  var btn = document.querySelector("#place_ships");
+
+                  var toogleInput = function (e) {
+                    input1.disabled = e.target.checked;
+                    input2.disabled = e.target.checked;
+                    input3.disabled = e.target.checked;
+                    input4.disabled = e.target.checked;
+                    btn.disabled = e.target.checked;
+                  };
+
+                  toogleInput({ target: checkbox });
+                  checkbox.addEventListener("change", toogleInput);
+                }
+              </script>
+              <hr>
+            </div>
+            <div class="heading">
+              Wohin schießen:
+            </div>
+            <div class="shoot_mechanic">
+              <input type="text" id="shoot_letter" placeholder="Buchstabe">
+              <input type="number" id="shoot_number" placeholder="Nummer">
+              <div class="shooting">
+                <button id="shoot_ships" class="btn btn-primary btn-round" type="submit"
+                  py-click="ship_shoot()">Schießen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="restart_mechanic">
+          <!-- PIN: ENDLOS SCHLEIFE ==> NICHT AUSFÜHREN SOLLANGE NICHT GELÖST SONST STÜRTZT BROWSER AB (bitte disabled entfernen)-->
+          <button id="new_game" class="button-42 button_newgame" type="submit" py-click="loop_fields()" disabled>
+            Neues Spiel
+          </button>
+          <br>
+          <button id="reset_game" class="button-42 button_reset" type="submit" py-click="reset_fields()">
+            Zurücksetzen
+          </button>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+body{
+	background-image: url(https://image.cnbcfm.com/api/v1/image/106844324-1614097957170-gettyimages-666333588-95282604.jpeg?v=1614098007);
+	background-size: 100%;
+}
+table{
+	position: absolute;
+	table-layout:fixed;
+	text-align: center;
+	font-size: 35px;
+	width: 90%;
+	height: 90%;
+	margin: 30px;
+}
+#player_board table td{
+	border: 1px solid;
+	border-radius: 10px;
+	background-color: #1facf872;
+}
+td{
+	height: 10px;
+	width: 10px;
+	color: #000000;
+}
+input[type=checkbox]
+{
+  transform: scale(1.5);
+  padding: 10px;
+	margin-left: 1%;
+}
+hr{
+	background-color: #7f9b64;
+	height: 2px;
+	border: 0;
+}
+.board{
+	position: absolute;
+	left: 20px;
+	top: 90px;
+	border-radius: 10px;
+	background-color: #95979ebd;
+	padding: 5px;
+	width: 45%;
+	height: 700px;
+	margin-top:auto;
+  margin-bottom:auto;
+  text-align:center;
+}
+.controls{
+	position: absolute;
+	right: 0;
+	top: 0;
+	border-radius: 10px;
+	background-color: #95979ebd;
+	padding: 5px;
+	margin: 10px;
+	right: 10px;
+	height: 90%;
+	width: 45%;
+}
+.controls_content{
+	display: block;
+  justify-content: center;
+  align-items: center;
+	width: 100%;
+}
+.scores{
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}
+.pc_score, .player_score{
+	font-size: 20px;
+	width: 50%;
+}
+.pc_score, .player_score{
+	border-radius: 10px;
+	background-color: #c3f196a3;
+	padding: 5px;
+	margin: 10px;
+}
+.heading{
+	font-size: 25px;
+	font-weight: bold;
+}
+.mechanic{
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}
+.start_end{
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}
+.set, .place{
+	border-radius: 10px;
+	background-color: #c3f196a3;
+	padding: 5px;
+	margin: 10px;
+	width: 45%;
+	height: 400px;
+}
+.place_btn{
+	height: 100%;
+}
+.placeship_mechanic{
+	margin-right: 10px;
+	text-align: right;
+}
+.button_place{
+	height: 150px;
+	margin-right: 10px;
+}
+.restart_mechanic{
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+}
+.button_reset, .button_newgame{
+	margin: 5%;
+	width: 50;
+}
+.button-42 {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #da1e1e;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button-42:hover {background-color: #b21414}
+
+.button-42:active {
+  background-color: #b21414;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.inp input[type=text], .inp input[type=number] {
+  padding:10px;
+  border:0;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	margin: 2px;
+	border-radius:10px;
+}
+.inp label {
+  color: #603213;
+  font-weight: bold;
+  display: block;
+}
+.inp label:after { content: ": " }
+
+.place input[type=text], .place input[type=number] {
+  padding:10px;
+  border:0;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+	margin: -1px;
+	border-radius:10px;
+	width: 25%;
+}
+.place label {
+  color: #603213;
+  font-weight: bold;
+  display: block;
+}
+.place label:after { content: ": " }
+
+.btn {
+	appearance: none;
+	-webkit-appearance: none;
+  font-family: sans-serif;
+  cursor: pointer;
+  padding: 12px;
+  min-width: 100px;
+  border: 0px;
+    -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+		transition: background-color 100ms linear;
+	}
+
+	.btn:focus, .btn.focus {
+  outline: 0;
+}
+
+.btn-round {
+	border-radius: 20px;
+}
+
+.btn-primary {
+  background: #399329;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+	background: #2d7321;
+  color: #ffffff;
+}
+.shooting{
+	margin-top: 5px;
+}
+/* -----------------temp----------------- */
