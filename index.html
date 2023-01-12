@@ -121,8 +121,8 @@
               Wohin schießen:
             </div>
             <div class="shoot_mechanic">
-              <input type="text" id="shoot_letter" placeholder="Buchstabe">
-              <input type="number" id="shoot_number" placeholder="Nummer">
+              <input type="text" id="shoot_letter" placeholder="Buchstabe" value="a">
+              <input type="number" id="shoot_number" placeholder="Nummer" value="1">
               <div class="shooting">
                 <button id="shoot_ships" class="btn btn-primary btn-round" type="submit"
                   py-click="ship_shoot()">Schießen</button>
@@ -131,8 +131,7 @@
           </div>
         </div>
         <div class="restart_mechanic">
-          <!-- PIN: ENDLOS SCHLEIFE ==> NICHT AUSFÜHREN SOLLANGE NICHT GELÖST SONST STÜRTZT BROWSER AB (bitte disabled entfernen)-->
-          <button id="new_game" class="button-42 button_newgame" type="submit" py-click="loop_fields()" disabled>
+          <button id="new_game" class="button-42 button_newgame" type="submit" py-click="new_game()" >
             Neues Spiel
           </button>
           <br>

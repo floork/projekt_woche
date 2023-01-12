@@ -2,6 +2,7 @@
 
 import random
 
+
 class Coordinate:
     """defines the Coordinate"""
 
@@ -26,6 +27,12 @@ def create_board(groesse):
             brd[(num_to_letter(i), j)] = False
     return brd
 
+def clear_board(groesse, brd: dict):
+    """generate playing board"""
+    for i in range(groesse):
+        for j in range(groesse):
+            brd[(num_to_letter(i), j)] = False
+    return brd
 
 def num_to_letter(num: int):
     """converts numbers into letters and greater numbers to (ABC)"""
@@ -42,16 +49,15 @@ def num_to_letter(num: int):
 
 def place_ship(new_ship: Schiff, board: dict):
     """places ship"""
-
     # set's horizontal ship
     if new_ship.first.HOR == new_ship.last.HOR:
         line = new_ship.first.HOR
         stard = new_ship.first.VERT
-        end = new_ship.last.VERT
-        leng = end - stard
+        ende = new_ship.last.VERT
+        leng = ende - stard
         cut = 1
 
-        # test's wether a ship crosses an other
+        # tests whether a ship crosses another
         for i in range(leng):
             if test_space((line, stard + i), board):
                 continue
@@ -69,11 +75,11 @@ def place_ship(new_ship: Schiff, board: dict):
     if new_ship.first.VERT == new_ship.last.VERT:
         spalte = new_ship.first.VERT
         stard = letter_to_num(new_ship.first.HOR)
-        end = letter_to_num(new_ship.last.HOR)
-        leng = end - stard
+        ende = letter_to_num(new_ship.last.HOR)
+        leng = ende - stard
         cut = 1
 
-        # test's wether a ship crosses an other
+        # tests whether a ship crosses another
         for i in range(leng):
             if test_space((num_to_letter(stard + i), spalte), board):
                 continue
@@ -127,20 +133,19 @@ def get_random_field():
     return field
 
 
-def pc_shoot(dic: dict, count: int):
+def pc_shoot(dic: dict):
     """function to shoot a boat"""
     # empty list to store already shot field
     already_shot: list = []
     field = get_random_field()
 
     if field in already_shot:
-        pc_shoot(dic, count)
+        pc_shoot(dic)
     # check if ship is on field and shoot it
     if dic.get(field):
         hit = dic[field] = False
-        count += 1
         pc_hit.append(field)
-        return hit, count
+        return hit
     pc_miss.append(field)
     return print("Nicht Getroffen!")
 
@@ -148,19 +153,22 @@ def pc_shoot(dic: dict, count: int):
 def player_shoot(
     field: Coordinate,
     dic: dict,
-):  # count: int):
-    """lhfslhk"""
-    # check if ship is on field and shoot it
-    if dic.get(field):
-        hit = dic[field] = False
-        # count += 1
-        player_hit.append(field)
-        return (hit,)  # count
-    player_miss.append(field)
-    return print("Nicht Getroffen!")
+):
+    """player shoots"""
+    hor = field.HOR
+    vert = int(field.VERT)
+    new_field = (hor.upper(), vert)
+    if dic.get(new_field):
+        hit = dic[new_field] = False
+        player_hit.append(new_field)
+        return hit, print("Treffer!")
+    miss = dic[new_field] = False
+    player_hit.append(new_field)
+    player_miss.append(new_field)
+    return miss, print("Nicht Getroffen!")
 
 
-def set_ships_pc(frequency: int, lenght: int):
+def set_ships(frequency: int, lenght: int, board: dict):
     """places the ships for the pc"""
     while frequency != 0:
         start_point = get_random_field()
@@ -169,36 +177,37 @@ def set_ships_pc(frequency: int, lenght: int):
         # vertical
         if get_direction == start_point[0]:
             if lenght == 1:
-                end_point = get_direction  # end_point = str
+                end_point = get_direction
                 place_ship(
                     Schiff(
                         Coordinate(start_point[0], start_point[1]),
                         Coordinate(end_point, start_point[1]),
                     ),
-                    pc_board,
+                    board,
                 )
             else:
                 end_point = letter_to_num(get_direction) + lenght
                 if end_point < PLAYINGBOARDSIZE:
+                    end_point = num_to_letter(end_point)
                     place_ship(
                         Schiff(
                             Coordinate(start_point[0], start_point[1]),
                             Coordinate(end_point, start_point[1]),
                         ),
-                        pc_board,
+                        board,
                     )
-                    frequency -= 1
+            frequency -= 1
 
         # horizontal
         elif get_direction == start_point[1]:
             if lenght == 1:
-                end_point = get_direction  # end_point = int
+                end_point = get_direction
                 place_ship(
                     Schiff(
                         Coordinate(start_point[0], start_point[1]),
                         Coordinate(start_point[0], end_point),
                     ),
-                    pc_board,
+                    board,
                 )
             else:
                 end_point = get_direction + lenght
@@ -208,41 +217,12 @@ def set_ships_pc(frequency: int, lenght: int):
                             Coordinate(start_point[0], start_point[1]),
                             Coordinate(start_point[0], end_point),
                         ),
-                        pc_board,
+                        board,
                     )
-                    frequency -= 1
+            frequency -= 1
 
-
-def set_ships_player(frequency: int, lenght: int):
-    """places the ships for the player"""
-    while frequency != 0:
-        start_point = get_random_field()
-        get_direction = random.choice(start_point)
-
-        # vertical
-        if get_direction == start_point[0]:
-            if lenght == 1:
-                end_point = get_direction
-                place_ship(Schiff(start_point, end_point), player_board)
-            else:
-                end_point = letter_to_num(get_direction) + lenght
-                if end_point < PLAYINGBOARDSIZE:
-                    place_ship(Schiff(start_point, end_point), player_board)
-                    frequency -= 1
-
-        # horizontal
-        elif get_direction == start_point[1]:
-            if lenght == 1:
-                end_point = get_direction
-                place_ship(Schiff(start_point, end_point), player_board)
-            else:
-                end_point = get_direction + lenght
-                if end_point < PLAYINGBOARDSIZE:
-                    place_ship(Schiff(start_point, end_point), player_board)
-                    frequency -= 1
 
 # GLOBAL VALUES
-# TODO: counter not implemented
 PLAYINGBOARDSIZE = 10
 player_hit: list = []
 player_miss: list = []

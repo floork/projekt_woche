@@ -1,24 +1,26 @@
 """
 pyscript code der getrennt von den hauptcode ist
 """
-from pyscript import Element # type: ignore
 from tabulate import tabulate
 
 from main import (
     PLAYINGBOARDSIZE,
     Coordinate,
     Schiff,
+    clear_board,
     create_board,
     num_to_letter,
+    pc_board,
     pc_count,
+    pc_hit,
+    pc_miss,
     place_ship,
     player_board,
     player_count,
     player_hit,
     player_miss,
     player_shoot,
-    set_ships_pc,
-    set_ships_player,
+    set_ships,
 )
 
 
@@ -29,8 +31,8 @@ def table(tabelle):
 
 def board_player():
     """creates the player board"""
-    spalten: list = []
-    zeilen: list = []
+    spalten = []
+    zeilen = []
     for j in range(PLAYINGBOARDSIZE + 1):
         spalten.clear()
         if j:
@@ -56,8 +58,8 @@ def board_player():
 
 def board_hit_miss():
     """creates the hit miss board"""
-    spalten: list = []
-    zeilen: list = []
+    spalten = []
+    zeilen = []
     hit_miss = create_board(PLAYINGBOARDSIZE)
     for element in player_hit:
         hit_miss[element] = "hit"
@@ -78,11 +80,6 @@ def board_hit_miss():
     temp.element.innerHTML = table(zeilen)
 
 
-# WICHTIG: Tabellen muessen in funktionen sein da sonst dopplungen auftreten koennten
-board_player()
-board_hit_miss()
-
-
 def ship_place():
     """places the ships"""
     start_letter = Element("start_letter").element.value
@@ -96,28 +93,38 @@ def ship_place():
 
 def ship_shoot():
     """shoots the ships"""
-    letter = Element("shoot_letter").value
-    number = Element("shoot_number").value
-    player_shoot(Coordinate(letter, number), player_board)
-    label_pc = Element("score_1")
-    label_player = Element("score_2")
-    label_pc.element.innerHTML = pc_count
-    label_player.element.innerHTML = player_count
+    letter = Element("shoot_letter").element.value
+    number = Element("shoot_number").element.value
+    player_shoot(Coordinate(letter, number), pc_board)
 
 
-# ERROR: infinite loop
-def loop_fields():
-    """loops through the input fields and places the ships"""
-    create_board(PLAYINGBOARDSIZE)
+def new_game():
+    """starts a new game"""
+    reset_fields()
     for i in range(1, 5):
         var = Element("laenge_" + str(i))
         val = var.element.value
-        set_ships_pc(val, i)
+        val = int(val)
+        set_ships(val, i, pc_board)
         if Element("auto_place").element.checked:
-            set_ships_player(val, i)
+            set_ships(val, i, player_board)
+    board_player()
+    board_hit_miss()
 
 
 def reset_fields():
     """resets the board"""
+    global player_board, pc_board
+    player_hit.clear()
+    player_miss.clear()
+    pc_hit.clear()
+    pc_miss.clear()
+    player_board = clear_board(PLAYINGBOARDSIZE, player_board)
+    pc_board = clear_board(PLAYINGBOARDSIZE, pc_board)
     board_player()
     board_hit_miss()
+
+
+# so that the tabels are visable by default
+board_player()
+board_hit_miss()
