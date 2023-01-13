@@ -11,14 +11,15 @@ from main import (
     create_board,
     num_to_letter,
     pc_board,
-    pc_count,
     pc_hit,
     pc_miss,
+    pc_score,
+    pc_shoot,
     place_ship,
     player_board,
-    player_count,
     player_hit,
     player_miss,
+    player_score,
     player_shoot,
     set_ships,
 )
@@ -33,50 +34,79 @@ def board_player():
     """creates the player board"""
     spalten = []
     zeilen = []
+    hit_miss = create_board(PLAYINGBOARDSIZE + 1)
+    for element in pc_hit:
+        hit_miss[element] = "hit"
+    for element in pc_miss:
+        hit_miss[element] = "miss"
     for j in range(PLAYINGBOARDSIZE + 1):
         spalten.clear()
         if j:
             for i in range(PLAYINGBOARDSIZE + 2):
                 if i:
-                    if player_board.get((num_to_letter(j), i)):
-                        spalten.append("🛥")
+                    if player_board.get((num_to_letter(j - 1), i - 1)):
+                        spalten.append("🚢")
                     else:
                         spalten.append(" ")
+                    if hit_miss.get(
+                        (num_to_letter(j - 1), i - 1)
+                    ) == "hit" and player_board.get(
+                        (num_to_letter(j - 1), i - 1)
+                    ):
+                        spalten.remove("🚢")
+                        spalten.append("🔥")
+                    elif hit_miss.get(
+                        (num_to_letter(j), i)
+                    ) == "miss" and not player_board.get(
+                        (num_to_letter(j - 1), i - 1)
+                    ):
+                        spalten.remove(" ")
+                        spalten.append("💦")
                 else:
-                    spalten.append(j - 1)
+                    spalten.append(num_to_letter(j - 1))
         else:
             for i in range(PLAYINGBOARDSIZE + 2):
                 if i:
-                    spalten.append(num_to_letter(i - 1))
+                    spalten.append(i - 1)
                 else:
-                    spalten.append(" ")
+                    spalten.append("")
         zeilen.append(spalten[0:-1])
 
     temp = Element("player_board")
     temp.element.innerHTML = table(zeilen)
 
 
-def board_hit_miss():
+def board_hit_miss_pc():
     """creates the hit miss board"""
     spalten = []
     zeilen = []
-    hit_miss = create_board(PLAYINGBOARDSIZE)
+    hit_miss = create_board(PLAYINGBOARDSIZE + 1)
     for element in player_hit:
         hit_miss[element] = "hit"
     for element in player_miss:
         hit_miss[element] = "miss"
     for j in range(PLAYINGBOARDSIZE + 1):
         spalten.clear()
-        for i in range(PLAYINGBOARDSIZE + 2):
-            if hit_miss.get((num_to_letter(j), i)) == "hit":
-                spalten.append("❌")
-            elif hit_miss.get((num_to_letter(j), i)) == "miss":
-                spalten.append("⭕️")
-            else:
-                spalten.append(" ")
+        if j:
+            for i in range(PLAYINGBOARDSIZE + 2):
+                if i:
+                    if hit_miss.get((num_to_letter(j - 1), i - 1)) == "hit":
+                        spalten.append("🔥")
+                    elif hit_miss.get((num_to_letter(j - 1), i - 1)) == "miss":
+                        spalten.append("💦")
+                    else:
+                        spalten.append(" ")
+                else:
+                    spalten.append(num_to_letter(j - 1))
+        else:
+            for i in range(PLAYINGBOARDSIZE + 2):
+                if i:
+                    spalten.append(i - 1)
+                else:
+                    spalten.append(" ")
         zeilen.append(spalten[0:-1])
 
-    temp = Element("hitmiss_board")
+    temp = Element("hitmiss_board2")
     temp.element.innerHTML = table(zeilen)
 
 
@@ -92,10 +122,21 @@ def ship_place():
 
 
 def ship_shoot():
+    global player_score, pc_score
     """shoots the ships"""
     letter = Element("shoot_letter").element.value
     number = Element("shoot_number").element.value
-    player_shoot(Coordinate(letter, number), pc_board)
+    if player_shoot(Coordinate(letter, number), pc_board):
+        player_score += 1
+    if pc_shoot(player_board):
+        pc_score += 1
+    score_pc = Element("score_1")
+    score_pc.element.innerHTML = pc_score
+    score_player = Element("score_2")
+    score_player.element.innerHTML = player_score
+    board_player()
+    board_hit_miss_pc()
+    winning_condition()
 
 
 def new_game():
@@ -109,7 +150,8 @@ def new_game():
         if Element("auto_place").element.checked:
             set_ships(val, i, player_board)
     board_player()
-    board_hit_miss()
+    board_hit_miss_pc()
+    print(pc_board)
 
 
 def reset_fields():
@@ -122,9 +164,25 @@ def reset_fields():
     player_board = clear_board(PLAYINGBOARDSIZE, player_board)
     pc_board = clear_board(PLAYINGBOARDSIZE, pc_board)
     board_player()
-    board_hit_miss()
+    board_hit_miss_pc()
+
+
+def winning_condition():
+    bod = Element("body")
+    player_ships = [k for k, v in player_board.items() if v == True]
+    pc_ships = [k for k, v in pc_board.items() if v == True]
+    if len(player_ships) == len(pc_hit):
+        bod.element.innerHTML = (
+            "Der Feind hat gewonnen! - Bitte lade die Seite neu!"
+        )
+        bod.element.style.fontSize = "70px"
+    elif len(pc_ships) == len(player_hit):
+        bod.element.innerHTML = (
+            "Der Spieler hat gewonnen! - Bitte lade die Seite neu!"
+        )
+        bod.element.style.fontSize = "70px"
 
 
 # so that the tabels are visable by default
 board_player()
-board_hit_miss()
+board_hit_miss_pc()

@@ -2,23 +2,43 @@ body{
 	background-image: url(https://image.cnbcfm.com/api/v1/image/106844324-1614097957170-gettyimages-666333588-95282604.jpeg?v=1614098007);
 	background-size: 100%;
 }
-table{
-	position: absolute;
-	table-layout:fixed;
-	text-align: center;
-	font-size: 35px;
-	width: 90%;
-	height: 90%;
-	margin: 30px;
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 15px;
+  grid-template-areas:
+    "board1 board2 controls"
+    "board1 board2 controls"
+    "board1 board2 controls";
 }
-#player_board table td{
+.board1 { grid-area: board1; }
+.board2 { grid-area: board2; }
+.controls { grid-area: controls; }
+
+#player_board table td, #hitmiss_board2 table td{
 	border: 1px solid;
 	border-radius: 10px;
-	background-color: #1facf872;
+	background-color: #317ca472;
+  height: 50px;
+  width: 50px;
+}
+#board2{
+  position: relative;
+  overflow: hidden;
+}
+
+table{
+	table-layout:fixed;
+	text-align: center;
+	font-size: 32px;
+	width: 90%;
+	height: 90%;
 }
 td{
-	height: 10px;
-	width: 10px;
+  padding: 0px;
+	height: 35px;
+	width: 35px;
 	color: #000000;
 }
 input[type=checkbox]
@@ -32,30 +52,21 @@ hr{
 	height: 2px;
 	border: 0;
 }
-.board{
-	position: absolute;
+.board1, .board2{
 	left: 20px;
-	top: 90px;
 	border-radius: 10px;
-	background-color: #95979ebd;
+	background-color: #95979eda;
 	padding: 5px;
-	width: 45%;
-	height: 700px;
 	margin-top:auto;
   margin-bottom:auto;
   text-align:center;
+  justify-content: center;
 }
 .controls{
-	position: absolute;
 	right: 0;
-	top: 0;
 	border-radius: 10px;
 	background-color: #95979ebd;
 	padding: 5px;
-	margin: 10px;
-	right: 10px;
-	height: 90%;
-	width: 45%;
 }
 .controls_content{
 	display: block;
@@ -208,4 +219,3 @@ hr{
 .shooting{
 	margin-top: 5px;
 }
-/* -----------------temp----------------- */

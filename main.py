@@ -27,12 +27,14 @@ def create_board(groesse):
             brd[(num_to_letter(i), j)] = False
     return brd
 
+
 def clear_board(groesse, brd: dict):
     """generate playing board"""
     for i in range(groesse):
         for j in range(groesse):
             brd[(num_to_letter(i), j)] = False
     return brd
+
 
 def num_to_letter(num: int):
     """converts numbers into letters and greater numbers to (ABC)"""
@@ -135,7 +137,7 @@ def get_random_field():
 
 def pc_shoot(dic: dict):
     """function to shoot a boat"""
-    # empty list to store already shot field
+    # empty list to store already shot fields
     already_shot: list = []
     field = get_random_field()
 
@@ -143,11 +145,12 @@ def pc_shoot(dic: dict):
         pc_shoot(dic)
     # check if ship is on field and shoot it
     if dic.get(field):
-        hit = dic[field] = False
+        hit = dic[field] = True
         pc_hit.append(field)
-        return hit
+        return hit, 1
+    miss = dic[field] = False
     pc_miss.append(field)
-    return print("Nicht Getroffen!")
+    return miss
 
 
 def player_shoot(
@@ -159,13 +162,12 @@ def player_shoot(
     vert = int(field.VERT)
     new_field = (hor.upper(), vert)
     if dic.get(new_field):
-        hit = dic[new_field] = False
+        hit = dic[new_field] = True
         player_hit.append(new_field)
-        return hit, print("Treffer!")
+        return hit, 1
     miss = dic[new_field] = False
-    player_hit.append(new_field)
     player_miss.append(new_field)
-    return miss, print("Nicht Getroffen!")
+    return miss
 
 
 def set_ships(frequency: int, lenght: int, board: dict):
@@ -227,8 +229,8 @@ PLAYINGBOARDSIZE = 10
 player_hit: list = []
 player_miss: list = []
 player_board = create_board(PLAYINGBOARDSIZE)
-player_count = 0
+player_score = 0
 pc_hit: list = []
 pc_miss: list = []
 pc_board = create_board(PLAYINGBOARDSIZE)
-pc_count = 0
+pc_score = 0

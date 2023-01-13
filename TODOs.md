@@ -1,7 +1,6 @@
-Fix/Todo:
-- board_hit_miss() does nothing
+# Todo's and Notes
 
-- no pc shoot symbols implemented
+## Todo:
+- fix ship count
+- fix ships moving or shots not showing sometimes from pc
 
-- wrong ship count
-- counter (Player & PC)
