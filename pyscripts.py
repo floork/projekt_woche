@@ -106,7 +106,7 @@ def board_hit_miss_pc():
                     spalten.append(" ")
         zeilen.append(spalten[0:-1])
 
-    temp = Element("hitmiss_board2")
+    temp = Element("hitmiss_board")
     temp.element.innerHTML = table(zeilen)
 
 
@@ -122,8 +122,8 @@ def ship_place():
 
 
 def ship_shoot():
-    global player_score, pc_score
     """shoots the ships"""
+    global player_score, pc_score
     letter = Element("shoot_letter").element.value
     number = Element("shoot_number").element.value
     if player_shoot(Coordinate(letter, number), pc_board):
@@ -142,13 +142,16 @@ def ship_shoot():
 def new_game():
     """starts a new game"""
     reset_fields()
-    for i in range(1, 5):
+    for i in range(2, 6):
         var = Element("laenge_" + str(i))
         val = var.element.value
         val = int(val)
         set_ships(val, i, pc_board)
         if Element("auto_place").element.checked:
             set_ships(val, i, player_board)
+    Element("shoot_letter").element.disabled = False
+    Element("shoot_number").element.disabled = False
+    Element("shoot_ships").element.disabled = False
     board_player()
     board_hit_miss_pc()
     print(pc_board)
@@ -156,31 +159,46 @@ def new_game():
 
 def reset_fields():
     """resets the board"""
-    global player_board, pc_board
+    global player_board, pc_board, player_score, pc_score
     player_hit.clear()
     player_miss.clear()
+    player_score = 0
     pc_hit.clear()
     pc_miss.clear()
+    pc_score = 0
     player_board = clear_board(PLAYINGBOARDSIZE, player_board)
     pc_board = clear_board(PLAYINGBOARDSIZE, pc_board)
+    Element("score_1").element.innerHTML = 0
+    Element("score_2").element.innerHTML = 0
     board_player()
     board_hit_miss_pc()
+    Element("winner").element.innerHTML = "<b>-</b>"
+    Element("winner").element.style.backgroundColor = ""
+    Element("shoot_letter").element.disabled = True
+    Element("shoot_number").element.disabled = True
+    Element("shoot_ships").element.disabled = True
 
 
 def winning_condition():
-    bod = Element("body")
+    bod = Element("winner")
     player_ships = [k for k, v in player_board.items() if v == True]
     pc_ships = [k for k, v in pc_board.items() if v == True]
     if len(player_ships) == len(pc_hit):
         bod.element.innerHTML = (
-            "Der Feind hat gewonnen! - Bitte lade die Seite neu!"
+            "Der Feind gewinnt!"
         )
-        bod.element.style.fontSize = "70px"
+        bod.element.style.backgroundColor="violet"
+        Element("shoot_letter").element.disabled = True
+        Element("shoot_number").element.disabled = True
+        Element("shoot_ships").element.disabled = True
     elif len(pc_ships) == len(player_hit):
         bod.element.innerHTML = (
-            "Der Spieler hat gewonnen! - Bitte lade die Seite neu!"
+            "Der Spieler gewinnt!"
         )
-        bod.element.style.fontSize = "70px"
+        bod.element.style.backgroundColor="violet"
+        Element("shoot_letter").element.disabled = True
+        Element("shoot_number").element.disabled = True
+        Element("shoot_ships").element.disabled = True
 
 
 # so that the tabels are visable by default

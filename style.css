@@ -1,6 +1,6 @@
 body{
 	background-image: url(https://image.cnbcfm.com/api/v1/image/106844324-1614097957170-gettyimages-666333588-95282604.jpeg?v=1614098007);
-	background-size: 100%;
+  background-size: 100%;
 }
 .container {
   display: grid;
@@ -16,7 +16,7 @@ body{
 .board2 { grid-area: board2; }
 .controls { grid-area: controls; }
 
-#player_board table td, #hitmiss_board2 table td{
+#player_board table td, #hitmiss_board table td{
 	border: 1px solid;
 	border-radius: 10px;
 	background-color: #317ca472;
@@ -63,10 +63,12 @@ hr{
   justify-content: center;
 }
 .controls{
-	right: 0;
+  right: 0;
 	border-radius: 10px;
 	background-color: #95979ebd;
 	padding: 5px;
+  margin-top: 40px;
+  text-align: center;
 }
 .controls_content{
 	display: block;
@@ -218,4 +220,11 @@ hr{
 }
 .shooting{
 	margin-top: 5px;
+}
+#win_label{
+  font-size: 30px;
+}
+#winner{
+  font-size: 30px;
+  border-radius: 10px;
 }

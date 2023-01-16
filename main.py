@@ -171,7 +171,7 @@ def player_shoot(
 
 
 def set_ships(frequency: int, lenght: int, board: dict):
-    """places the ships for the pc"""
+    """places the ships for the pc and or for the player"""
     while frequency != 0:
         start_point = get_random_field()
         get_direction = random.choice(start_point)
@@ -179,11 +179,10 @@ def set_ships(frequency: int, lenght: int, board: dict):
         # vertical
         if get_direction == start_point[0]:
             if lenght == 1:
-                end_point = get_direction
                 place_ship(
                     Schiff(
                         Coordinate(start_point[0], start_point[1]),
-                        Coordinate(end_point, start_point[1]),
+                        Coordinate(start_point[0], start_point[1]),
                     ),
                     board,
                 )
@@ -191,36 +190,43 @@ def set_ships(frequency: int, lenght: int, board: dict):
                 end_point = letter_to_num(get_direction) + lenght
                 if end_point < PLAYINGBOARDSIZE:
                     end_point = num_to_letter(end_point)
-                    place_ship(
+                    if not place_ship(
                         Schiff(
                             Coordinate(start_point[0], start_point[1]),
                             Coordinate(end_point, start_point[1]),
                         ),
                         board,
-                    )
+                    ):
+                        start_point = get_random_field()
+                        end_point = letter_to_num(start_point[0]) + lenght
+                        if end_point < PLAYINGBOARDSIZE:
+                            end_point = num_to_letter(end_point)
             frequency -= 1
 
         # horizontal
         elif get_direction == start_point[1]:
             if lenght == 1:
-                end_point = get_direction
                 place_ship(
                     Schiff(
                         Coordinate(start_point[0], start_point[1]),
-                        Coordinate(start_point[0], end_point),
+                        Coordinate(start_point[0], start_point[1]),
                     ),
                     board,
                 )
             else:
                 end_point = get_direction + lenght
                 if end_point < PLAYINGBOARDSIZE:
-                    place_ship(
+                    if not place_ship(
                         Schiff(
                             Coordinate(start_point[0], start_point[1]),
                             Coordinate(start_point[0], end_point),
                         ),
                         board,
-                    )
+                    ):
+                        start_point = get_random_field()
+                        end_point = start_point[1] + lenght
+                        if end_point < PLAYINGBOARDSIZE:
+                            continue
             frequency -= 1
 
 
